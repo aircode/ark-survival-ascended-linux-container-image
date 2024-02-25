@@ -1,5 +1,6 @@
 # ARK: Survival Ascended - Dedicated Linux Server - Docker Image
-->FORK FROM MANUELS GREAT WORK THX
+-> FORK FROM MANUELS GREAT WORK THX
+i like to adress here some future updates.
 
 Only add my Cluster functionality here and forked for my self as an education lection. 
 
