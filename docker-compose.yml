@@ -7,7 +7,7 @@ services:
     user: gameserver
     image: "mschnitzer/asa-linux-server:latest"
     environment:
-      - ASA_START_PARAMS=TheIsland_WP?listen?Port=7777?RCONPort=27020?RCONEnabled=True -WinLiveMaxPlayers=50
+      - ASA_START_PARAMS=TheIsland_WP?listen?Port=7777?RCONPort=27020?RCONEnabled=True -WinLiveMaxPlayers=50 -NoTransferFromFiltering -clusterid=YOURCLUSTERID-MAKEIT_UNIQUE -ClusterDirOverride="/home/gameserver/CROSSARKFILES" -mods=
       - ENABLE_DEBUG=0
     ports:
       # Game port for player connections through the server browser
@@ -20,52 +20,57 @@ services:
       - steam-1:/home/gameserver/Steam:rw
       - steamcmd-1:/home/gameserver/steamcmd:rw
       - server-files-1:/home/gameserver/server-files:rw
+      - CROSSARKFILES:/home/gameserver/CROSSARKFILES:rw
     networks:
       asa-network:
   set-permissions-1:
-    entrypoint: "/bin/bash -c 'chown -R 25000:25000 /steam ; chown -R 25000:25000 /steamcmd ; chown -R 25000:25000 /server-files'"
+    entrypoint: "/bin/bash -c 'chown -R 25000:25000 /steam ; chown -R 25000:25000 /steamcmd ; chown -R 25000:25000 /server-files; chown -R 25000:25000 /CROSSARKFILES'"
     user: root
     image: "opensuse/leap"
     volumes:
       - steam-1:/steam:rw
       - steamcmd-1:/steamcmd:rw
       - server-files-1:/server-files:rw
-#  asa-server-2:
-#    container_name: asa-server-2
-#    hostname: asa-server-2
-#    entrypoint: "/usr/bin/start_server"
-#    user: gameserver
-#    image: "mschnitzer/asa-linux-server:latest"
-#    environment:
-#      - ASA_START_PARAMS=TheIsland_WP?listen?Port=7778?RCONPort=27021?RCONEnabled=True -WinLiveMaxPlayers=50
-#    ports:
-#      # Game port for player connections through the server browser
-#      - 0.0.0.0:7778:7778/udp
-#      # RCON port for remote server administration
-#      - 0.0.0.0:27021:27021/tcp
-#    depends_on:
-#      - set-permissions-2
-#    volumes:
-#      - steam-2:/home/gameserver/Steam:rw
-#      - steamcmd-2:/home/gameserver/steamcmd:rw
-#      - server-files-2:/home/gameserver/server-files:rw
-#    networks:
-#      asa-network:
-#  set-permissions-2:
-#    entrypoint: "/bin/bash -c 'chown -R 25000:25000 /steam ; chown -R 25000:25000 /steamcmd ; chown -R 25000:25000 /server-files'"
-#    user: root
-#    image: "opensuse/leap"
-#    volumes:
-#      - steam-2:/steam:rw
-#      - steamcmd-2:/steamcmd:rw
-#      - server-files-2:/server-files:rw
+      - CROSSARKFILES:/CROSSARKFILES:rw
+  asa-server-2:
+    container_name: asa-server-2
+    hostname: asa-server-2
+    entrypoint: "/usr/bin/start_server"
+    user: gameserver
+    image: "mschnitzer/asa-linux-server:latest"
+    environment:
+      - ASA_START_PARAMS=Svartalfheim_WP?listen?Port=7779?RCONPort=27022?RCONEnabled=True -WinLiveMaxPlayers=50 -NoTransferFromFiltering -clusterid=YOURCLUSTERID-MAKEIT_UNIQUE -ClusterDirOverride="/home/gameserver/CROSSARKFILES" -mods=942355
+    ports:
+      # Game port for player connections through the server browser
+      - 0.0.0.0:7779:7779/udp
+      # RCON port for remote server administration
+      - 0.0.0.0:27022:27022/tcp
+    depends_on:
+      - set-permissions-2
+    volumes:
+      - steam-2:/home/gameserver/Steam:rw
+      - steamcmd-2:/home/gameserver/steamcmd:rw
+      - server-files-2:/home/gameserver/server-files:rw
+      - CROSSARKFILES:/home/gameserver/CROSSARKFILES:rw
+    networks:
+      asa-network:
+  set-permissions-2:
+    entrypoint: "/bin/bash -c 'chown -R 25000:25000 /steam ; chown -R 25000:25000 /steamcmd ; chown -R 25000:25000 /server-files ; chown -R 25000:25000 /CROSSARKFILES'"
+    user: root
+    image: "opensuse/leap"
+    volumes:
+      - steam-2:/steam:rw
+      - steamcmd-2:/steamcmd:rw
+      - server-files-2:/server-files:rw
+      - CROSSARKFILES:/CROSSARKFILES:rw
 volumes:
   steam-1:
   steamcmd-1:
   server-files-1:
-#  steam-2:
-#  steamcmd-2:
-#  server-files-2:
+  steam-2:
+  steamcmd-2:
+  server-files-2:
+  CROSSARKFILES:
 networks:
   asa-network:
     attachable: true
